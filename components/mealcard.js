@@ -10,31 +10,60 @@ import {
   TextInput
 } from 'react-native'
 import theme from '../src/theme'
-import { Ionicons } from '@expo/vector-icons'
+import { MaterialCommunityIcons } from '@expo/vector-icons'
 
-const MealCard = (props: Props) => {
-  const { name, price, id } = props
-  return (
-    <View style={styles.root}>
-      <View style={styles.container}>
-        <View style={styles.flexContainer}>
-          <Text style={styles.dishName}>
-            {name}
-          </Text>
-          <View style={styles.priceTag}>
-            <Text style={styles.price}>
-              {`₹ ${price}`}
+class MealCard extends React.Component {
+  constructor(props) {
+    super(props)
+    this.state = {
+      selectedMeal:null,
+      qty:0
+    }
+  }
+  render() {
+    const { name, price, id } = this.props
+    const { selectedMeal, incart, orderTotal, qty } = this.state
+    console.log(this.state);
+    return (
+      <View style={styles.root}>
+        <View style={styles.container}>
+          <View style={styles.flexContainer}>
+            <Text style={styles.dishName}>
+              {name}
             </Text>
+            <View style={styles.priceTag}>
+              <Text style={styles.price}>
+                {`₹ ${price}`}
+              </Text>
+            </View>
           </View>
+
+          <View style={styles.flexContainerAdd}>
+          {qty > 0
+                  ? (<TouchableOpacity onPress={()=>this.setState({selectedMeal:id, qty:qty-1})}>
+                    <MaterialCommunityIcons
+                      name='minus-circle-outline'
+                      size={30}
+                      color={theme.palette.text.body}
+                    />
+                  </TouchableOpacity>)
+                  : null
+          }
+          <Text style={styles.price}>{` ${qty} `}</Text>
+          <TouchableOpacity onPress={()=>this.setState({selectedMeal:id, qty:qty+1})}>
+          <MaterialCommunityIcons 
+            name='plus-circle-outline'
+            size={30}
+            color={theme.palette.text.body}
+          />
+          </TouchableOpacity>
+          </View>
+
         </View>
-        <Ionicons
-          name='ios-add-circle-outline'
-          size={30}
-          color={theme.palette.text.body}
-        />
       </View>
-    </View>
-  )
+    )
+  }
+
 }
 
 const styles = StyleSheet.create({
@@ -57,6 +86,12 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     overflow: 'hidden',
     justifyContent:'space-between',
+  },
+  flexContainerAdd: {
+    display: 'flex',
+    flexDirection: 'row',
+    overflow: 'hidden',
+    justifyContent:'flex-start',
   },
   priceTag: {
     backgroundColor: '#FFC400',
