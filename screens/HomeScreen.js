@@ -14,13 +14,21 @@ import MealTabBar from "../components/accordion"
 import { MaterialCommunityIcons } from '@expo/vector-icons'
 import theme from '../src/theme'
 import Progressbar from '../components/progressbar'
+import Basket from '../components/basket'
 export default class HomeScreen extends React.Component {
   static navigationOptions = {
     header: null,
   }
 
   state = {
-    meals : null
+    meals : null,
+    basketView:{
+      totalItems:0,
+      total:0
+    },
+    order: {},
+    basketClick:false,
+    basketdata:null
   }
 
   componentDidMount() {
@@ -41,9 +49,30 @@ export default class HomeScreen extends React.Component {
       //.then(data => ({ data }))
     //  .catch(err => ({ err }))
   }
+
+  onAddMeal(id, qty, price, name) {
+    let order = this.state.order
+    if (order[id] ) {
+      order[id] = {
+        name:name,
+        price:price,
+        qty:this.state.order[id].qty + qty,
+        mealid:id
+      }
+    } else {
+      order[id] = {
+        name:name,
+        price:price,
+        qty:qty,
+        mealid:id
+      }
+    }
+      this.setState({order, basketView:{totalItems:this.state.basketView.totalItems + qty, total: this.state.basketView.total + price}})
+  }
+
   render() {
     console.log('state');
-    console.log(this.state);
+    console.log(this.state.order);
     return (
       <View style={styles.container}>
         <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
@@ -54,12 +83,14 @@ export default class HomeScreen extends React.Component {
             color={theme.palette.secondary.main}
           />
           </View>
-          <MealTabBar data={this.state.meals} />
+          <MealTabBar data={this.state.meals} qtys={this.state.order} onAddMeal={(id ,qty, price, name)=>this.onAddMeal(id, qty, price, name)} />
           <View style={styles.progressbar}>
           {this.state.mealStatus ? <Progressbar /> : null}
           </View>
         </ScrollView>
-
+        <View style={styles.basket} >
+          <Basket basketView = {this.state.basketView} order={this.state.order}/>
+        </View>
       </View>
     );
   }
@@ -193,4 +224,10 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent:'center',
   },
+  basket: {
+    flex:1,
+    position:'absolute',
+    right:theme.spacing.unit,
+    top:theme.spacing.unit,
+  }
 });

@@ -20,7 +20,7 @@ class MealTabBar extends React.Component {
     }
   }
   render() {
-      const { data } = this.props
+      const { data, onAddMeal, qtys } = this.props
       const { show } = this.state
     return (
       <View style={styles.root}>
@@ -37,13 +37,13 @@ class MealTabBar extends React.Component {
         </View>
         <View>
           {show === 'snack' && data && data.data && data.data.snack && data.data.snack.map(meal =>(
-            <View key={meal.id}><MealCard name = {meal.name} price={meal.price} id={meal.id} /></View>
+            <View key={meal.id}><MealCard qtys={qtys} onAddMeal={onAddMeal} name = {meal.name} price={meal.price} id={meal.id} /></View>
           ))}
           {show === 'beverage' && data && data.data && data.data.beverage && data.data.beverage.map(meal =>(
-            <View key={meal.id}><MealCard name = {meal.name} price={meal.price} id={meal.id} /></View>
+            <View key={meal.id}><MealCard qtys={qtys} onAddMeal={onAddMeal} name = {meal.name} price={meal.price} id={meal.id} /></View>
           ))}
           {show === 'lunch' && data && data.data && data.data.lunch && data.data.lunch.map(meal =>(
-            <View key={meal.id}><MealCard name = {meal.name} price={meal.price} id={meal.id} /></View>
+            <View key={meal.id}><MealCard qtys={qtys} onAddMeal={onAddMeal} name = {meal.name} price={meal.price} id={meal.id} /></View>
           ))}
         </View>
       </View>
@@ -64,7 +64,7 @@ const styles = StyleSheet.create({
     display: 'flex',
     flexDirection: 'row',
     overflow: 'hidden',
-    margin: theme.spacing.unit * 2
+    margin: theme.spacing.unit
   },
   priceTag: {
     backgroundColor: '#FFC400',

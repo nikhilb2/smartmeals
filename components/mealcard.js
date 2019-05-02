@@ -15,15 +15,11 @@ import { MaterialCommunityIcons } from '@expo/vector-icons'
 class MealCard extends React.Component {
   constructor(props) {
     super(props)
-    this.state = {
-      selectedMeal:null,
-      qty:0
-    }
+
   }
   render() {
-    const { name, price, id } = this.props
-    const { selectedMeal, incart, orderTotal, qty } = this.state
-    console.log(this.state);
+    const { name, price, id, onAddMeal, qtys } = this.props
+    console.log(this.props.qtys);
     return (
       <View style={styles.root}>
         <View style={styles.container}>
@@ -37,23 +33,30 @@ class MealCard extends React.Component {
               </Text>
             </View>
           </View>
-
           <View style={styles.flexContainerAdd}>
-          {qty > 0
-                  ? (<TouchableOpacity onPress={()=>this.setState({selectedMeal:id, qty:qty-1})}>
-                    <MaterialCommunityIcons
-                      name='minus-circle-outline'
-                      size={30}
-                      color={theme.palette.text.body}
-                    />
-                  </TouchableOpacity>)
-                  : null
+          {qtys && qtys[id] && qtys[id].qty > 0
+            ?  <TouchableOpacity
+                  onPress={() => {
+                    onAddMeal(id, -1, -price, name)
+                  }
+                }>
+                <MaterialCommunityIcons
+                  name='minus-circle-outline'
+                  size={40}
+                  color={theme.palette.text.body}
+                />
+                </TouchableOpacity>
+            : null
           }
-          <Text style={styles.price}>{` ${qty} `}</Text>
-          <TouchableOpacity onPress={()=>this.setState({selectedMeal:id, qty:qty+1})}>
-          <MaterialCommunityIcons 
+            <Text style={styles.qty}>{qtys && qtys[id] && qtys[id].qty > 0 ? ` ${qtys[id].qty} ` :<Text> 0 </Text>}</Text>
+          <TouchableOpacity
+            onPress={() => {
+              onAddMeal(id, 1, price, name)
+            }
+          }>
+          <MaterialCommunityIcons
             name='plus-circle-outline'
-            size={30}
+            size={40}
             color={theme.palette.text.body}
           />
           </TouchableOpacity>
@@ -76,10 +79,10 @@ const styles = StyleSheet.create({
     borderRadius: theme.shape.cardBorderRaius,
     backgroundColor: theme.palette.background.paper,
     overflow: 'hidden',
-    margin: theme.spacing.unit * 2,
+    margin: theme.spacing.unit,
     borderColor:'black',
     borderWidth: 0.5,
-    padding: 2
+    padding: 5
   },
   flexContainer: {
     display: 'flex',
@@ -102,7 +105,18 @@ const styles = StyleSheet.create({
   price: {
     ...theme.typography.text1,
     fontWeight: 'bold'
-  }
+  },
+  qty: {
+    ...theme.typography.text1,
+    fontWeight: 'bold',
+    fontSize:30
+  },
+  dishName: {
+    flex: 1,
+    ...theme.typography.h3,
+    fontWeight: 'bold',
+    textTransform: 'capitalize'
+  },
 })
 
 export default MealCard
