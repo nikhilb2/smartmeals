@@ -43,7 +43,7 @@ class Basket extends React.Component {
         transparent={false}
         visible={basketClick}
         onRequestClose={()=>this.setState({ basketClick:false })}>
-        <BasketView order={order} basketView={basketView}/>
+        <BasketView order={order} basketView={basketView} onRequestClose={()=>this.setState({ basketClick:false })}/>
         </Modal>
       </View>
       </TouchableOpacity>

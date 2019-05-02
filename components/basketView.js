@@ -12,6 +12,7 @@ import {
 } from "react-native";
 import theme from "../src/theme";
 import ItemList from "./itemList";
+import Button from "./button";
 
 class BasketView extends React.Component {
   constructor(props) {
@@ -41,11 +42,21 @@ class BasketView extends React.Component {
               </View>
             ))}
             <View style={styles.list}>
-              <Text>No. Of items {basketView.totalItems}</Text>
-              <Text>Total ₹{basketView.total}</Text>
+              <Text style={styles.fontWeight}>No. Of items {basketView.totalItems}</Text>
+              <Text style={styles.fontWeight}>Total ₹{basketView.total}</Text>
             </View>
         </ScrollView>
-        <Text>Something</Text>
+        <View style={styles.buttons}>
+        <Button
+          caption="Continue"
+          style={styles.signinBtn}
+        />
+        <Button
+          onClick={onRequestClose}
+          caption="Go Back"
+          style={styles.signinBtn}
+        />
+        </View>
       </SafeAreaView>
     );
   }
@@ -65,6 +76,16 @@ const styles = StyleSheet.create({
     display: "flex",
     flexDirection: "row",
     justifyContent: "space-between"
+  },
+  fontWeight: {
+    fontWeight: 'bold',
+  },
+  buttons: {
+    margin: theme.spacing.unit,
+    padding: theme.spacing.unit,
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "space-around"
   }
 });
 

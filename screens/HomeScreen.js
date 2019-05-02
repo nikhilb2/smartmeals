@@ -38,7 +38,7 @@ export default class HomeScreen extends React.Component {
 
   getMenu() {
     this.setState({mealStatus:true})
-    fetch(`http://192.168.0.59/smartmeal-api/get_meals.php`)
+    fetch(`http://smartmeals.zefiri.com/api/get_meals.php`)
       .then(response => response.json())
       .then(result => {
         this.setState({ meals:result,mealStatus:false })
