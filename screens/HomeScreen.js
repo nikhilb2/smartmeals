@@ -15,6 +15,7 @@ import { MaterialCommunityIcons } from '@expo/vector-icons'
 import theme from '../src/theme'
 import Progressbar from '../components/progressbar'
 import Basket from '../components/basket'
+import { restoreSession, logout, currentSession } from '../src/auth/UserSession'
 export default class HomeScreen extends React.Component {
   static navigationOptions = {
     header: null,
@@ -22,6 +23,7 @@ export default class HomeScreen extends React.Component {
 
   state = {
     meals : null,
+    user: currentSession,
     basketView:{
       totalItems:0,
       total:0
@@ -34,7 +36,13 @@ export default class HomeScreen extends React.Component {
   componentDidMount() {
     console.log('componentDidMount')
     this.getMenu()
+    restoreSession()
   }
+
+  componentDidUpdate() {
+    const { params } = this.props.navigation.state
+  }
+
 
   getMenu() {
     this.setState({mealStatus:true})
@@ -70,12 +78,34 @@ export default class HomeScreen extends React.Component {
       this.setState({order, basketView:{totalItems:this.state.basketView.totalItems + qty, total: this.state.basketView.total + price}})
   }
 
+  navigateTo(screen, data){
+    this.props.navigation.navigate(screen, data)
+  }
+
+  basketClickToggle() {
+    if (this.state.basketClick) {
+      this.setState({basketClick:false})
+    } else {
+      this.setState({basketClick:true})
+    }
+  }
+
   render() {
-    console.log('state');
-    console.log(this.state.order);
+    const { navigation } =  this.props
     return (
       <View style={styles.container}>
         <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
+        {currentSession && currentSession.jwt
+          ? <TouchableOpacity style={styles.signOut} onPress={()=>{
+              logout()
+              this.setState({user:null})
+            }}>
+              <Text>Sign Out</Text>
+            </TouchableOpacity>
+          : null
+        }
+
+
           <View style={styles.welcomeContainer}>
           <MaterialCommunityIcons
             name='food-fork-drink'
@@ -89,7 +119,8 @@ export default class HomeScreen extends React.Component {
           </View>
         </ScrollView>
         <View style={styles.basket} >
-          <Basket basketView = {this.state.basketView} order={this.state.order}/>
+          <Basket basketClickToggle={()=>this.basketClickToggle()} basketClick={ this.state.basketClick} navigateTo={(screen, data)=>this.navigateTo(screen, data)} basketView = {this.state.basketView} order={this.state.order}/>
+          <Text>Place Order</Text>
         </View>
       </View>
     );
@@ -229,5 +260,11 @@ const styles = StyleSheet.create({
     position:'absolute',
     right:theme.spacing.unit,
     top:theme.spacing.unit,
+  },
+  signOut: {
+    flex:1,
+    position:'absolute',
+    left:theme.spacing.unit * 2,
+    top:theme.spacing.unit * 5,
   }
 });

@@ -15,7 +15,6 @@ import TopBar from "./topbar";
 
 const ItemList = props => {
   const { onRequestClose, name, price, qty } = props;
-  console.log(name);
   return (
       <View style={styles.list}>
         <Text>{qty} {name} X ₹{price}</Text>

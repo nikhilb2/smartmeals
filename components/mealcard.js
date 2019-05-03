@@ -19,7 +19,6 @@ class MealCard extends React.Component {
   }
   render() {
     const { name, price, id, onAddMeal, qtys } = this.props
-    console.log(this.props.qtys);
     return (
       <View style={styles.root}>
         <View style={styles.container}>
