@@ -30,7 +30,8 @@ export default class HomeScreen extends React.Component {
     },
     order: {},
     basketClick:false,
-    basketdata:null
+    basketdata:null,
+    logoutPressed:false
   }
 
   componentDidMount() {
@@ -95,7 +96,7 @@ export default class HomeScreen extends React.Component {
     return (
       <View style={styles.container}>
         <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
-        {currentSession && currentSession.jwt
+        {currentSession
           ? <TouchableOpacity style={styles.signOut} onPress={()=>{
               logout()
               this.setState({user:null})
@@ -104,7 +105,6 @@ export default class HomeScreen extends React.Component {
             </TouchableOpacity>
           : null
         }
-
 
           <View style={styles.welcomeContainer}>
           <MaterialCommunityIcons
@@ -118,9 +118,8 @@ export default class HomeScreen extends React.Component {
           {this.state.mealStatus ? <Progressbar /> : null}
           </View>
         </ScrollView>
-        <View style={styles.basket} >
-          <Basket basketClickToggle={()=>this.basketClickToggle()} basketClick={ this.state.basketClick} navigateTo={(screen, data)=>this.navigateTo(screen, data)} basketView = {this.state.basketView} order={this.state.order}/>
-          <Text>Place Order</Text>
+        <View style={styles.basket}  >
+          <Basket user={currentSession} navigateTo={(screen,data) =>this.navigateTo(screen,data)} basketView = {this.state.basketView} order={this.state.order}/>
         </View>
       </View>
     );

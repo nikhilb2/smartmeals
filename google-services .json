@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "729917793125",
+    "firebase_url": "https://smartmeals-c9e06.firebaseio.com",
+    "project_id": "smartmeals-c9e06",
+    "storage_bucket": "smartmeals-c9e06.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:729917793125:android:9b24646b704a1a6e",
+        "android_client_info": {
+          "package_name": "zefiri.smartmeals.com"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "729917793125-evq5eu7cspl56e896ol0s6fin1d192d3.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBMHh1DaeVQBsEOxAWkbV9y-oc0odsf3Vo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "729917793125-evq5eu7cspl56e896ol0s6fin1d192d3.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

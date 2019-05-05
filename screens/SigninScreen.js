@@ -37,6 +37,9 @@ class SigninScreen extends React.Component {
   }
 
   onSignIn(email, password)  {
+    let checkIfSuccess = false
+    let user = null
+    const { params } = this.props.navigation.state
     this.setState({signinin: true})
     fetch('http://smartmeals.zefiri.com/api/login.php',{
       method: 'POST',
@@ -49,16 +52,25 @@ class SigninScreen extends React.Component {
         data:result.data,
         jwt:result.jwt
       })
+      if (!result.error) {
+        checkIfSuccess = true
+        user = result
+      }
+      console.log(result);
       return result
-    }).then(
-      this.props.navigation.navigate('Home', {basketClick:true})
+    }).then(() => {
+      if (checkIfSuccess) {
+        this.props.navigation.navigate('BasketViewScreen', {order:params.order,basketView:params.basketView,user:user})
+      }
+    }
     )
   }
 
 
   render() {
     const { navigation } = this.props
-    const { email, password, signinin } = this.state
+    const { params } = this.props.navigation.state
+    const { email, password, signinin, signIn } = this.state
     return (
       <SafeAreaView style={styles.container} forceInset={{ bottom: 'never' }}>
         <TopBar
@@ -85,6 +97,7 @@ class SigninScreen extends React.Component {
             textContentType="password"
             secureTextEntry={true}
           />
+          <Text>{signIn && signIn.error}{signIn && signIn.message}</Text>
           {signinin
             ? (<Progressbar style={styles.progress} />)
             : (<View><Button
@@ -92,13 +105,13 @@ class SigninScreen extends React.Component {
                 if (email && password) {
                   this.onSignIn(email, password)
                 } else {
-                  Alert.alert(t('Input email and password'))
+                  Alert.alert('Input email and password')
               }}}
               caption='SIGN IN'
               style={styles.signinBtn}
             /></View>)}
           <View style={styles.placeholder} />
-          <TouchableOpacity onPress={() => navigation.navigate('SignUp')}>
+          <TouchableOpacity onPress={() => navigation.navigate('SignUp', params)}>
             <Text style={styles.createAccountBtn}>Don't have an account? Click here to create one!</Text>
           </TouchableOpacity>
         </ScrollView>

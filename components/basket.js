@@ -22,9 +22,9 @@ class Basket extends React.Component {
     }
   }
   render() {
-    const { basketView, order, navigateTo, basketClick, basketClickToggle } = this.props
+    const { basketView, order, navigateTo, basketClick, basketClickToggle,user } = this.props
     return (
-      <TouchableOpacity onPress={basketClickToggle}>
+      <TouchableOpacity onPress={()=>navigateTo('BasketViewScreen',{order, basketView, user})}>
       <View style={styles.container}>
       <View style={styles.svg}>
         <FontAwesome
@@ -37,13 +37,6 @@ class Basket extends React.Component {
         <Text>Total: {basketView && basketView.total}</Text>
       </View>
       </View>
-      <Modal
-        animationType="slide"
-        transparent={false}
-        visible={basketClick}
-        onRequestClose={()=>this.setState({ basketClick:false })}>
-        <BasketView navigateTo={navigateTo} order={order} basketView={basketView} onRequestClose={basketClickToggle}/>
-        </Modal>
       </View>
       </TouchableOpacity>
     )

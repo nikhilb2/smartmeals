@@ -7,10 +7,14 @@ import HomeScreen from '../screens/HomeScreen';
 import LinksScreen from '../screens/LinksScreen';
 import SettingsScreen from '../screens/SettingsScreen';
 import SigninScreen from '../screens/SigninScreen';
+import SignupScreen from '../screens/SignupScreen';
+import BasketViewScreen from '../screens/BasketViewScreen';
 
 const HomeStack = createStackNavigator({
   Home: HomeScreen,
-  SigninScreen: SigninScreen
+  SigninScreen: SigninScreen,
+  SignUp: SignupScreen,
+  BasketViewScreen:BasketViewScreen
 });
 
 HomeStack.navigationOptions = {
